@@ -1,0 +1,82 @@
+[sql02]
+
+1. 서브쿼리
+	: 쿼리문 안에 다시 쿼리문을 작성하는 형태
+
+	select * from [테이블명];	일반적인 쿼리문
+	
+	select * from ([서브쿼리문]);	서브쿼리문
+
+	select * from ([서브쿼리문 (서브쿼리문)]); 중첩이 가능 
+
+2. 조인 JOIN
+	: 둘 이상의 테이블을 연결하여 데이터를 검색하는 방법
+	  두 테이블에 적어도 한개의 컬럼은 서로 공유하는 형태여야 가능
+
+	Equi Join : 등가조인, 내부조인
+		유일한 primary key를 비교하여 검색
+
+3. 시퀀스 SEQUENCE
+	: 유일한 값을 생성해주는 오라클 객체
+	  시퀀스를 생성하면 기본키와 같이 순차적으로 증가하는 컬럼을 자동적으로 생성할 수 있다.
+	  Number 타입의 primary key 값을 생성할때 사용
+	  시퀀스는 테이블과는 독립적으로 저장되고 생성된다.
+
+	1) 시퀀스 생성
+	
+		* 이름지을때 일반적으로 '테이블명_seq' 라고 많이 짓는다.
+
+		create sequence [테이블명_seq] [옵션];
+				
+						[start with n]
+						[increment by n]
+						[maxvalue n | nomaxvalue]
+						[minvalue n | nominvalue]
+						[cycle	| nocycle]
+						[cache  | nocache]
+
+		* 옵션 생략가능
+		- start with 	: 시퀀스의 시작 값을 지정. n을 1로 지정하면 1부터 순차적으로 시퀀스번호가 증가
+		- incement by 	: 시퀀스의 증가값을 지정. n을 2로 지정하면 2씩 증가
+		- maxvalue 	: 시퀀스의 최대값 지정
+		- minvalue	: 시퀀스의 최소값 지정 
+		- cycle		: 최대값 도달시 순환 여부(사용 안할시 nocycle)
+		- cache		: cache 여부, 원하는 숫자만큼 미리 만들어 Shared pool의 Library Cache에 상주시킴.
+				  기본값 20 , 원하지 않으면 nocaache
+
+	2) 시퀀스 조회
+
+	* DUAL 테이블
+	사용자 SYS가 소유하며 모든 사용자가 액세스 가능한 테이블이다.
+	select ~ from ~ 의 형식을 갖추기 위한 일종의 Dummy 테이블
+
+	3) 시퀀스 적용
+		: insert로 값 입력시, values(시퀀스명.nextval)
+
+	4) 시퀀스 삭제
+		
+		drop sequence [시퀀스명]
+
+4. 변환함수
+	to_number(문자열)		: 문자타입의 숫자(alphanumeric)를 숫자로 변환
+	to_char(숫자/날짜, 'format')	: 숫자나 날짜를 주어진 format 형태로 문자열 타입으로 변환
+	to_date(문자열,'format')	: 문자열을 주어진 format형태로 날짜타입으로 변환
+
+5. 그룹 group by
+	데이터들을 원하는 그룹으로 나눌 수 있다.
+	나누고자하는 그룹의 컬럼명을 select 절과 group by 절 뒤에 추가
+	집계함수와 함께 사용되는 상수는 group by절에 추가하지 않아도 된다.
+
+6. having
+	where 절에서 집계함수를 사용할 수 없다.
+	having 절은 집계함수를 가지고 조건비교를 할때 사용한다.
+	having 절은 group by 절과 함께 사용이 된다.
+
+7. 합집합
+	union : 두테이블의 결합을 나타내며, 결합시킨느 두 테입르의 중복되지 않는 값들을반환
+
+8. 교집합
+	intersect : 두 행의 집합중 공통된 행을 반환
+9. 차집합
+	minus : 첫번째 select 문에 의해 반환되는 행에서 
+		두번째 select 문에 의해 반환되는 행에 존재하지 않는 행들을 반환

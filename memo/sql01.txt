@@ -1,0 +1,310 @@
+[sql01]
+
+1. 세팅
+	0) SQL 작성 툴 : SQLTools
+
+	1) User : git본인번호	-> git08
+	   PW	: user와 동일
+	   Mode : normal
+	   C/T	: TCP/IP
+	   SID	: XE
+	   IP add : nullmaster.iptime.org
+	   PORT	: 1521
+
+2. 데이터 베이스
+	
+	1) 데이터 베이스 DataBase DB : 유용한 데이터의 집합
+			데이터 베이스의 주된 목적은 파일을 저장하는 거이 앙니라
+			파일의 이름이나 위치등을 저장하는 것이다.
+
+	2) DBMS : DateBase Management System : 데이터를 관리하는 툴
+		Oracle 사용
+
+		8, 9 vers. -> I : internet의 i
+		10,11	   -> g : grid의 g
+		12,13,18   -> c : cloud의 c, 가상화 서비스
+
+	3) 파일시스템의 문제점
+		일관성	  
+		보안성	 
+		경제성	 
+		무결성	 
+
+	4) 데이터베이스는 관계형 데이터 베이스로 테이블(표)의 형태로 저장을 한다.
+
+		column	: 처음 작업시 컬럼을 작업해놓음.
+		row(레코드) : 한명 가입 시 레코드 추가
+		
+		수정은 컬럼을 수정한다. 삭제는 row를 삭제한다.
+
+3. SQL	: Structured Query Language : 구조화 질의어
+
+	1) SQL 종류
+	
+	DDL (Data Definition Language) : 데이터 정의어
+	: 데이터베이스 객체(테이블, 뷰, 인덱스...) 의 구조 정의
+
+		CREATE	: 생성
+		ALTER	: 변경
+		DROP	: 삭제
+		RENAME	: 객체이름 변경
+		(TRUNCATE) : DB 저장공간 삭제
+
+	DML(Data Manipulation Language) : 데이터 조작어
+	: 데이터의 삽입, 삭제, 객신 등 데이터 처리
+	
+		INSERT	: 데이터 입력
+		DELETE	: 데이터 삭제
+		UPDATE	: 데이터 수정
+
+	  DQL	SELECT	: 데이터 검색
+
+	DCL (Data Control Language) : 데이터 제어어
+	: 데이터베이스 사용자의 권한을 제어함
+	
+		GRANT	: 권한 부여
+		REVOKE	: 권한 취소
+
+	----------------------
+	TCL(Transaction Control Language) : 트렌젝션 제어어
+	: 트렌젝션(데이터 처리 단위) 관련 제어
+
+		COMMIT		: 트랜젝션 정상 종료 처리
+					- 자동 commit : DDL, DCL
+		ROLLBACK	: 돌아가기(작업 취소)
+		SAVEPOINT	: 백업 정책
+
+4. 테이블
+	: 데이터베이스의 기본적인 데이터 저장 단위
+	  행, 열의 구조로 데이터 저장
+	
+	열 column : 속성, 여러개의 열이 한 행의 속성값들을 저장함. ex ) 회원 가입시, 이름/나이/주소
+	행 row : 데이터 저장되는 곳. 레코드. ex) 회원 가입시, 한 사람의 여러정보가 하나의 레코드가 됨.
+
+5. 테이블 생성 : CREATE
+
+	CREATE TABLE [테이블명] (
+		[컬럼명][컬럼데이터타입][옵션],.....
+
+	); 
+	COMMIT;
+	ex ) CREATE TABLE EMP(
+		EMPNO NUMBER(4) NOT NULL,....
+	);
+
+	1) 데이터 타입
+		
+		문자 : VARCHAR2(글자길이값)	: 가변길이 문자저장 형태, 4000까지 저장가능 (한글 2000) 저장가능
+		숫자 : NUMBER()			: 정수, 실수 모두 포함. 38자리
+		날짜 : DATE
+
+	2) 옵션 : 제약조건 Constraint
+		: 부적절한 자료가 입력되는 것을 방지하기 위해서 여러가지 규칙을 적용해 놓는것
+
+		NOT NULL	: null값이 들어올 수 없다. 회원가입시 필수 기입항목 같은것을 설정 할 수 있다.
+		unique		: 중복 요소 올 수 없는 것
+		check		: 조건 체크등 검사하고 들어갈 수 있는것
+		default		: 값을 입력하지 않았을때 들어가는 기본값 설정 ex) default 0
+		primary key	: not null + unique 형태로
+				  테이블당 한개 반드시 있어야 하며, 테이블당 한개만 지정 가능
+				  레코드를 구분짓는 기준임.
+		foreign key	: 두개 테이블을 연결시킬때 다른 테이블의 프라이머리키가 되는 아이를
+				  현재 테이블의 컬럼에 지정
+
+	3) 테이블 생성시 주의 사항
+		- 테이블 이름과 컬럼은 항상 알파벳 문자로 시작
+		  $, #, _ 사용가능, 공백불가
+		- 컬럼명 예약어 사용 불가
+		- 한 계정에서 테이블명 중복 불가
+		- 한 테이블 안에서 컬럼이름은 같을 수 없으며, 다른테이블에서 컬럼이름이 같을 수는 있다. 
+
+6. 테이블 검색 : SELECT
+	
+	# 기본 구조
+	select [검색할것] from [테이블명];
+
+	# 전체 레코드 검색
+	select * from [테이블명];
+
+	# 특정 컬럼에 해당하는 레코드를 검색
+	select [컬럼명,컬럼명,...] from [테이블명];
+
+	# 검색옵션 지정
+	select [옵션][컬럼명,.....] from [테이블명];
+
+		* 옵션
+		ALL		: 생략가능, 전체
+		DISTINCT	: 중복된 데이터가 있는 경우 1건으로 처리해서 출력
+	
+7. 레코드 추가 : INSERT
+
+	# 데이터 모두 기입
+
+	insert into [테이블명] values( [값들..],);
+
+		* 값은 컬럼의 순서대로 넣어주어야한다.
+		* 문자열은 홑따옴표 (쌍따옴표X)
+
+	# 원하는 컬럼만 데이터 넣기
+
+	insert into [테이블명(컬럼명들)] values([값들..]);
+
+		* not null 기능있는 부분은 필수로 작성해야함
+
+8. 레코드 수정 : UPDATE
+
+	# 일괄 수정
+	update [테이블명] set [컬럼명=값,컬럼명=값,컬럼명=값]
+
+	# 레코드 조건 수정
+	update [테이블명] set [컴럼명=값,컬럼명=값,...] where [조건식];
+	
+9. 레코드 삭제 : DELETE
+	# 전체 레코드 삭제 : 테이블은 그대로 있고, 안에 레코드들이 삭제
+	delete from [테이블명];
+
+	# 레코드 조건 삭제 where절 사용
+	delete from [테이블명] where [조건식];
+
+10. 테이블 정보 수정 : ALTER
+	: 컬럼명 수정, 컬럼 추가 등등에 사용
+
+	1) 컬럼 추가 : ALTER - ADD
+
+		alter table [테이블명] add([컬럼명 데이터타입 옵션]);
+
+		* 컬럼과 컬럼사이에 추가 불가, 항상 뒤에 따라 붙음
+		* 이미 데이터가 들어가있을때는 not null 옵션을 줄 수 없다.
+
+	2) 컬럼 타입 변경 : ALTER - MODIFY
+		
+		alter table [테이블명] modify ([컬럼명 데이터타입 옵션]);
+
+		* 컬럼 변경이 고려 사항
+		- 해당 컬럼의 크기를 늘릴 수 있지만 줄이지는 못함
+		- 해당 컬럼이 null 값만 가지고 있거나 테이블에 아무 행도 없으면 컬럼의 폭을 줄일 수 있다.
+		- 해당 컬럼이 null 값만 가지고 있으면 데이터 유형을 변경할 수 있다.
+		- 해당 컬럼의 DEFAULT값을 바꾸면 변경 작업 이후 발생하는 행 삽입에만 영향을 미치게 된다.
+		- 해당 컬럼의 null 값이 없을 경우에만 NOT NULL 제약 조건을 추가할 수 있다.
+
+	3) 컬럼 이름 변경 : ALTER - RENAME
+
+		alter table [테이블명] RENAME COLUMN [구 컬럼명] TO [새 컬럼명];
+
+	4) 컬럼 삭제 : ALTER - DROP
+		
+		ALTER TABLE[테이블명] DROP COLUMN [컬럼명];
+		
+		* 한번에 한개의 컬럼만 삭제가능, 삭제 후 테이블에 한개 이상의 컬럼이 남아야함
+		* 삭제되면 복구 불가능
+
+11. 예명(별명) : ALIAS
+	: 조회된 결과에 일종의 별명(Alias)을 부여해서 컬럼 레이블을 변경할 수 있다.
+	  실제 테이블의 컬럼명이 변경되지 않고, 출력시 표에 예명으로 출력됨
+
+		select [컬럼명][예명],[컬럼명][예명] from [테이블]
+
+		* 컬럼명 바로 뒤에 온다
+		* 컬럼명과 Alias 사이에 AS(as) 키워드를 사용 할 수도 있다.
+		* 이중 인용부호(Double quotation)는 Alias가 공백, 특수문자를 포함할 경우와
+		  대소문자 구분이 필요할 경우 사용된다,
+		* 현재 SELECT 문장에 대해서만 유효
+		* 테이블 Alias는 길이가 30자까지 가능하나 짧을 수록 좋다.
+		* FROM 절에 테이블 Alias 설정시 해당 테이블 Alias는 SELECT 문장에서
+		  테이블 이름 대신 사용한다.
+
+12. 산술 연산자
+	: Number와 Date 자료형에 대해 사용
+
+	() * / + - 
+
+	ex) select player_name 이름, height-weight 키-몸무게 from testtable;
+
+13. 집계함수
+	: 여러행 또는 테이블 전체 행으로부터 하나의 결과값을 반환하는 함수
+
+	* 가장 많이 사용하는 함수에는 AVG(평균), COUNT(개수),MAX(최대값),MIN(최소값),SUM(합계)
+
+
+	count	: 검색된 레코드 수 반환
+	max	: 컬럼값 중 최대값 반환
+	min	: 컬럼값 중 최소값 반환
+	avg	: 평균값 반환
+	sum	: 컬럼의 합 반환
+
+	* GROUP BY 절을 이용하여 그룹당 하나의 결과로 그룹화 할 수 있다.
+	* HAVING 절을 사용하여 집계함수를 이용한 조건 비교를 할 수 있다.
+
+
+14. sample 테이블
+
+	emp: 사원테이블
+		컬럼 EMPNO(사번), ename(이름), job(직급), mgr(상사), HIREDATE(취임일), SAL(월급), COMM(보너스),DEPTNO(부서번호)
+	dept : 부서테이블 
+		컬럼 deptno(부서번호), dname(부서이름), loc(위치)
+
+15. WHERE 절
+	: 검색 조건을 지정해서 전체 검색보다 빠르게 검색하고, 간결한 결과를 뽑아내는 방법
+	
+	select [컬럼명] from [테이블명] where 조건식;
+
+	1) 조건식 연산자
+		#1. 비교연산자
+			= > >= < <=
+
+		#2. 논리연산자
+			AND OR NOT(SQL)
+			&&  || !  (자바)
+
+		#3. SQL연산자
+			- BETWEEN a and b : a와 b값 사이 (a,b값 포함)
+
+			- select * from [테이블명] where [컬럼명] between [범위값] and [범위값];
+		
+			- NOT BETWEEN a and b
+	
+			- IN()			: 리스트에 있는 어느 값 하나라도 일치하면 되는 경우
+				select * from [테이블명] where [컬럼명] in ([리스트]);
+
+				* 리스트는 범위가 아니라 각각 나열한 것임
+
+			- NOT IN
+		
+			- LIKE '비교문자열'	: 비교문자열과 형태가 일치하는 것 검사
+
+				select * from [테이블명] where [컬럼명] like '[비교문자열]');
+
+				# 비교문자열 와일드카드 사용
+				문자% : 시작하는 문자로 찾기
+				%문자 : 끝나는 문자로 찾기
+				%문자% : 앞뒤 상관없이 문자가 포함된것 찾기
+
+				_문자% : 두번째 문자가 해당 문자 인것 찾기
+
+			- NOT LIKE
+
+			- IS NULL	: null 값인 경우
+		
+				select * from [테이블명] where [컬럼명] is null
+					
+
+
+16. 정렬  ORDER BY
+	: 데이터의 정렬을 위해 사용
+	  특정 컬럼을 기준으로 정렬하여 검색할때 사용
+	
+	order by
+		asc : 오름차순, 기본값
+		desc : 내림차순
+
+	select * from [테이블명] order by [컬럼명];
+	
+	* SQL 문장의 제일 마지막에 위치
+	* 컬럼명 대신 SELECT절에서 사용한 Alias 명이나
+	  컬럼 순서를 나타내는 정수도 사용 가능
+	* 컬럼의 값이 NULL 값인 경우 NULL 값이 맨 마지막에 위치
+
+
+
+
+

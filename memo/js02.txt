@@ -1,0 +1,161 @@
+[js02]
+
+1. 자바 스크립트 객체
+
+	1) 내장객체
+		자바스크립트 엔진에 내장.
+		문자 String, 날짜 Date, 배열 Array, 수학 Math 객체 등이 있다.
+
+	2) 브라우저 객체 모델 (BOM, Browser Object Model)
+		브라우저에 계층 구조로 내장되어 있는 객체를 말함
+		window, screen, location, history, navigator 객체 등이 있다.
+
+		브라우저(window)는 document와 location의 상위 객체이다.
+		window : 브라우저
+		location : 주소창
+		document : 문서영역
+
+	3) 문서 객체 모델 (DOM, Document Object Model)
+		HTML 문서 구조를 말함
+		최상위 객체는 <html>, 그 하위로는 <head>,<body>
+		IE 8 이하 버전에서는 호환성이 떨어짐
+
+	4) API : https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference
+
+2. 내장 객체 Built-in Object
+	
+	1) 내장 객체 생성
+		: new 키워드 사용
+	
+		참조변수 = new 생성함수();
+		var arr = new Array();
+
+	2) Date 객체
+		: 날짜나 시간 관련 정보 필요할때
+
+		#1. 객체 생성
+			# 기본
+			참조변수 = new Date();
+
+			# 특정날짜
+			참조변수 = new Date("연/월/일");
+			참조변수 = new Date(연,월-1,일);
+	
+	3) Math 객체
+		: 수학 관련
+		  객체 생성없이 바로 사용가능
+	
+	4) String 객체
+		: 문자형 데이터를 객체로 취급
+
+		#1. 객체 생성
+			참조변수 = new String("문자형데이터");
+			참조변수 = 문자형데이터;
+	
+3. 브라우저 객체 모델
+
+	window
+		document
+			body, div, img, a, form, imput,...등
+		screen
+		location
+		history
+		navigator
+
+	1) window 객체
+		: 최상위 객체
+
+		# 메서드
+		open("URL","새창 이름", "새창 옵션들") 		: 팝업창 새창으로 열기
+			# 옵션
+			width, height	: 가로 세로 높이 지정
+			left, top : 위치지정
+			scrollbars : 
+			location : 주소창 없이 가능
+			status : 상태바
+			toolbars : 도구상자 유무
+		alert(데이터)					: 알림창으로 
+		prompt("질문","기본답변")
+		confirm("질문")					: 질문 확인/취소 창. 확인(true리턴), 취소(false리턴)
+		moveTo(x,y)					: 지정한 새창의 위치를 이동
+		resizeTo(width, height)				: 지정한 새창의 크기를 변경
+		setInterval(function(){실행코드}, 일정간격) 	: 지속적으로 일정한 시간간격으로 함수 호출하여 실행
+		setTimeout(function(){실행코드}, 일정간격)	: 단 한번 일정한 시간간격으로 함수 호출하여 실행				: 
+
+	2) screen 객체
+		: 사용자의 모니터 정보(속성)를 제공하는 객체
+		
+		screen.속성;
+
+		# 속성
+		width
+		height
+		availWidth	: 작업표시줄 제외한 화면 너비값 반환
+		availHeight	: 작업표시줄 제외한 화면 높이값 반환
+		colorDepth	: 사용자 모니터가 표현 가능한 컬러 bit 변환
+
+	3) location 객체
+		: 사용자 브러우저와 관련된 속성과 메서드 제공
+		  현재 URL 속성과 새로고침 메서드 제공
+	
+		location.속성;
+		location.메서드();
+
+		href		: 주소영역의 주소를 설정하거나, URL을 변환
+		hostname	: URL의 호스트이름을 설정하거나, 반환
+		host		: URL의 호스트이름과 포트 번호를 반환
+		protocol	: URL의 프로토콜 반환
+		search		: URL의 쿼리 값(요청값)을 반환
+		reload()	: 브라우저 새로 고침
+				
+	4) history 객체
+		: 브라우저에서 뒤로가기 앞으로 가기 기능을 할 수 있는 속성과 메서드 제공
+
+		history.속성;
+		history.메소드();
+		history.메서드(n)	: n 단계
+
+		back()		: 뒤로가기
+		forward()	: 앞으로가기
+		go(이동 숫자) 	: 이동 숫자가 -1이면, 1단계 이전에 방문한 페이지로 이동
+		length		: 방문 기록에 저장된 방문 사이트 목록의 개수를 반환
+
+	5) navigator 객체
+		: 현재 방문자가 사용하는 브라우저 정보와 운영체제 정보를 제공
+
+		navigator.속성
+		
+		appVersion
+		language
+		product
+		platform
+		onLine
+		useAgent
+
+4. 자바스크립트 내장 함수
+	: 자바스크립트 엔진에 내장된 함수
+	
+	parseInt()
+	parseFloat()
+	String()
+	Number()
+	Boolean()
+	isNan()		: is Not a Number의 약자.문자가 포함되어 있으면 true
+	eval()		: 문자형 데이터를 따옴표가 없는 자바스크립트 코드로 실행
+
+5. 객체 생성자 함수의 활용
+	
+	1) 구조
+		function 함수명(매개변수1, ...){
+			this.속성명 = 값;
+			this.함수명 = function(){
+				// 코드들...
+			}
+		}
+
+		var 참조변수 = new 함수명();
+
+		var 참조변수 = {속성 :값,속성 :값, 함수명 : function(){//코드작성}};
+
+
+

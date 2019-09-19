@@ -1,0 +1,194 @@
+[day18]
+
+1. 컬렉션
+	1) Stack <E> : java.util.Stack
+	
+		: 자료구조의 Stack, 자료가 위로 탑처럼 쌓이는 구조.
+		  LIFO(last in first out)
+
+		#1. 생성
+		Stack <E> 레퍼런스변수명 = new Stack<E>();
+	
+		#2. 주요 메서드
+		boolean		empty()		: 현재 스택이 비어있으면 true
+		E		push(E item)	: item을 스택의 맨 위(top)에 넣기
+		E		pop()		: 맨 위(top) 요소를 떼어내 스택에서 제거하며 리턴
+		E		peek()		: 맨 위(top) 요소를 스택에서 제거하지 않고 리턴해줌
+	
+	2) Properties
+		: K,V 형태로 데이터를 저장
+		  주로 어플리케이션의 환경설정과 관련된 속성을 저장하는데 사용.
+
+		#1. 주요 메서드
+		String		getProperty(String key)		: 키로 값 꺼내기
+		Object		setProperty(String key, String value)	: hashtable의 put()메서드 호출, 값 저장.
+		void		load(InputStream inStream)	: 외부파일을 스트림으로 읽은 것을 로드 시킴
+		void		list(PrintStream out)		: 출력방법을 인자로 주고 프로퍼티 값 리스트로 출력
+
+		ex) 외부파일 가져오기 예
+		FileInputStream fis = new ....(외부파일);
+		Properties props = new Porperties()
+		try{
+			props.load(fis);
+			........
+		}catch.....	
+
+2. 입출력 : java.io 패키지
+
+	io == I/O == input/output
+	input : 가져오는 것
+	output : 보내는것
+	
+	디렉토리(directory) == 폴더
+
+3. File class : java.io.file
+	: 크기, 생성, 삭제, 변경 등등 내용 다 관리 가능.
+	  입출력기능 X
+	
+	1) 생성자 : 기본 생성자 X 
+		File(File parent, String child) : parent 경로 명에 있는 child 파일 객체 생성
+		File(String pathname) : 완전한 경로명의 객체 생성
+		File(String parent, String child) : parent 경로 명에 있는 child 파일 객체 생성
+		File(URI uri) : 
+	
+	2) 객체 생성
+		File 레퍼런스변수명 = new File("전체경로");
+		File f = new File("c:\\Temp\\test.txt");
+		File 레퍼런스변수명 = new File("디렉토리 경로","파일명");
+		File f = new File("c:\\Temp","test.txt");
+		* 파일명은 확장자까지 표기
+
+	3) 주요 메서드
+	boolean		mkdir()		: 새로운 디렉토리(폴더)생성
+	String[]	list()		: 디렉토리내의 파일과 서브디렉토리 리스트를 String 배열로 리턴
+	File[]		listFiles()	: 디렉토리내의 파일과 서브디렉토리 리스트를 File 배열로 리턴
+	boolean		renameTo(File dest) : dest 경로명으로 파일 이름 변경
+	boolean		delete()	: 파일/디렉토리 삭제
+	long		length()	: 파일 크기 리턴
+	String		getPath()	: 경로 문자열로 리턴
+	String		getAbsolutePath()	: 절대경로 문자열로 리턴
+	String		getParent()	: 파일이나 디렉토리의 부모 디렉토리 이름 리턴
+	String		getName()	: 파일/디렉토리 이름 문자열로 리턴
+	boolean		isFile()	: 일반 파일이면 true리턴
+	boolean		isDirectory()	: 디렉토리면 true 리턴
+	long		lastModified()	: 마지막 변경 시간 리턴
+	boolean		exists()	: 파일 디렉토리 존재하면 true 리턴
+	boolean		createNewFile()	: 빈파일 생성, 생성하려는 파일이 이미 존재하면 생성되지 않는다.
+
+4 . Stream
+	: 데이터가 돌아다니는 통로 데이터를 목적지로 i/o하기 위한 방법
+
+	- 스트림은 다른 목적지로 데이터를 보낼때 중요한 역할을 함
+	스트림 없는 방식 : wifi
+	스트림 있는 방식 : LAN선
+
+	- 스트림은 단방형 (input과 output을 따로따로 진행)
+		서로 대화할려면 양측 모두 i/o 쌍으로 있어야함.
+		읽기 쓰기가 동시에 안된다.
+	- 스트림 사용하면 안정성이 높고, 안쓰면 응용프로그램 작성이 매우 어렵고,
+		입출력 장치를 모두 수용할 수 없게 된다.
+	- 자바 응용프로그램은 입력스트림과 출력스트림과만 연결하고,
+		입출력장치 제어하고 실질적인 입출력을 담당하는 것은 입출력 스트림이다.
+
+		입력장치 / 파일 ---->	입력 스트림 ---> 자바 응용프로그램
+		출력장치 / 파일 <----	출력 스트림 <--- 자바 응용프로그램 
+		
+	- 스트림을 통해 흘러가는 기본단위는 바이트나 문자이다.
+		자바 
+			바이트스트림	:  바이트 단위 이동	: 클래스 이름뒷부분에 Stream이 붙는다.
+			문자 스트림	:  문자 단위 이동	: 클래스 이름뒷부분에 Reader/Writer 가 붙는다.
+
+	- FIFO (first in first out)
+	- LIFO (last in first out)
+
+	- close()	: 스트림을 열었으면 사용 후 반드시 닫아줘야 메모리 누수가 안된다.
+
+5. 바이트 스트림
+	- 바이트 단위로 데이터 전송 (바이너리 데이터가 흐르는 스트림) -> 1byte (실 전송 바이너리 2byte)
+	- 다양한 클래스 제공으로 용도에 맞게 골라 사용
+	- 이미지, 동영상 전송 가능
+
+	1) InputStream, OutputStream
+		: 추상클래스, 바이트 입출력 처리를 위한 공통 기능을 가진 슈퍼 클래스
+		-----------------------------------------------------------------------------------
+		InputStream					OutputStream
+		abstract int read()				abstract void write(int b)
+		int read(byte[]b)				void write(byte[]b)
+		int read(byte[]b,int off,int len)		void write(byte[]b, int off,int len)
+
+	2) FileOutputStream
+		: 파일에 출력을 하기 위한 클래스
+		  파일에 바이너리 데이터를 저장할 수 있다.
+		#1. 생성자
+			API 참고
+		FileOutputStream(File file) 파일이 지정하는 파일에 스트림을 만든다.
+		FileOutputStream(String name)
+		#2. 주요 메서드
+		void write(int b)
+		void write(byte[]b)
+		void write(byte[]b, int off,int len)
+		void flush()	: 스트림에 남아 있는 데이터를 삭제한다.
+		void close()	: 메모리 부족이 발생할 수 있으니 붙여주는게 좋다.
+
+	3) FileInputStream
+		: 바이트 스트림으로 파일 읽는 스트림 클래스
+		#1. 생성자
+		FileInputStream(File file)  	경로에 있는 파일과 스트림을 연결해 주는 형태
+		FileInputStream(String name) 
+		
+		#2. 주요 메서드 
+		close()
+		int	read()		: 입력스트림에서 한바이트를 읽어 int형으로 리턴
+		int	read(byte[] b)	: 최대 배열 b의 크기 만클 바이트를 읽음
+		int	read(byte[] b, int off, int len) 
+					: 최대 len개의 바이트를 읽어 b배열의 off위치부터 저장
+		void 	close()		: 스트림 닫기
+		
+		# EOF	: End Of File 파일의 끝 : read()할때 EOF를 만나면 -1을 리턴한다.
+
+		
+	4) DataOutputStream
+	5) DataInputStream
+	6) ObjectOutputStream
+	7) ObjectInputStream
+
+6. 문자 스트림
+	- 2바이트의 유니코드 문자를 단위로, 입출력하는 스트림.
+	(한글 2byte)
+	- 이미지같은 문자화 되지 않는 바이너리 바이트값들은 처리 불가
+	- Reader / Writer
+	- 바이트 스트림은 byte[] --> 캐릭터 스트림은 char[]
+	
+	1) Reader / Writer class
+		: 추상 클래스 . 문자 스트림 클래스들의 조상
+	2) InputStreamReader
+		: 바이트 스트림을 문자 스트림으로 연결시켜주는 역할을 하는 보조 클래스	
+		  바이트 스트림의 데이터를 지정된 인코딩의 문자 데이터로 변환하는 작업 수행
+		
+		#1. 생성자
+		InputStreamReader(InputStream in)
+		InputStreamReader(InputStream in, String charsetName) -> utf-8 인코딩 위해서
+		#2. 메소드
+		String		getEncoding()	: 스트림의 인코딩을 리턴
+
+		## 윈도우에서 기본으로 사용하는 인코딩
+		ms949 : 1987년 한글 국가 표준 코드로 지정된 KSC5601을
+		마이크로소프트에서 확장하여 MS949라는 코드 체계를 만들고
+		윈도우에 기본코드로 사용하고 있다.
+		자바는 전 세계의 모든 문자를 표현하기 위해 만들어진 유니코드를 사용,
+		메모장 같이 윈도우에서 작성된 한글 텍스트 문서를 자바프로그램에서 읽을려면,
+		encoding을 ms949로 변경해야 한다. 
+	3) OutputStreamWriter
+		: 파일에 텍스트 데이터를 저장할 때 생성자 호출 시 인코딩 지정하여 처리
+		  인코딩 지정하지 않으면 OS에서 사용하는 인코딩으로 데이터 저장
+
+		#1. 생성자
+		OutputStreamWriter(OutputStream out) : 
+		OutputStreamWriter(OutputStream out, String charsetName) : 인코딩 셋팅
+		#2. 메소드
+			API 참고
+	4) BufferedReader
+		: 버퍼를 이용해서 입력의 효율을 높일 수 있도록 해주는 역할
+		  readLine()를 사용해서 데이터를 라인단위로 읽어올 수 있다.
+
+		BufferReader + InputStreamReader	-> Scanner 

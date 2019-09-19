@@ -1,0 +1,10 @@
+[이클립스 단축키]
+
+Alt+V : 파일 생성시 main 메서드 자동생성 단축키 
+
+Ctrl + F11 : 실행(run)
+Ctrl+ space bar : 자동완성 팝업 열기
+Ctrl + Alt+ 상/하 화살표키 : 한줄 복사
+Ctrl + D : 한줄 삭제
+Alt + 상/하 화살표키 : 줄(블럭) 이동
+Shift + Enter : 다음 줄 이동

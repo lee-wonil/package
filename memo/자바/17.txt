@@ -1,0 +1,151 @@
+[day17]
+
+1. 컬렉션 Collection
+	: JDK는 소위 자료구조 과목에서 배우는 자료 구조들을 컬렉션으로 만들어 제공.
+	  제네릭이라는 기법으로 구현
+	  컬렉션은 배열이 가진 고정크기의 단점을 극복하기 위해 객체들을 쉽게 삽입/ 삭제/검색 할수 있는
+	  가변 크기의 컨테이너다.
+
+
+	1) 컬렉션을 위한 자바 인터페이스와 클래스
+		
+
+		|---인터페이스---|---클래스----|
+		Collection<E>
+			- Set<E>
+				- HashSet<E>
+			- List<E>
+				- ArrayList<E>
+				- Vector<E>
+					- Stack<E>
+			- Queue<E>
+				- LinkedList<E> (Queue<E>, List<E>)
+		
+		Map<K,V>
+				- HashMap<K,V>
+
+		[Collection 상속/ 구현]
+		- Vector, ArrayList : 가변크기의 배열
+		- LinkedList : 노드들이 링크로 연결되는 리스트
+		- Stack : 스텍
+		- HashSet : 집합
+		[Map 상속/구현]
+		- HashMap : 키와 값의 쌍으로 이루어지는 컬렉션
+
+	2) 제네릭(generics) 기법
+		: JDK 1.5부터 도입.
+		  컬렉션 클래스 이름에 <E>,<K>,<V> 등이 포함 -> 타입매개변수(generic type)
+		  Vector<Integer> 	-> 정수만 저장 가능한 벡터
+		  Vector<int>	(X)	기본형으로 지정 불가능	--> 기본형을 대체하는 Wrapper 클래스 사용
+		  Vector<String>	-> 문자열만 저장 가능한 벡터
+		  Vector<Tv>   		-> Tv 객체만 저장 가능한 벡터
+
+		  class Stack<E>{
+			
+			.....
+			void push(E elemnet){...}
+			E pop(){....}
+			.....
+		  }
+		  
+		# 제네릭 타입 (타입매개변수)
+		E : element (요소)
+		T : type
+		V : value
+		K : key
+	
+	3) Vector<E> 백터	: java.util.Vector
+		: 가변적 배열 구조, 삽입되는 요소의 개수에 따라 자동 크기 조절.
+		  요소 삽입/ 삭제에 따라 요소들의 자리 이동 자동.
+
+		#1. 백터 생성
+		- 정수만 삽입 가능한 백터를 만들자
+		Vector<Integer> V = new Vector<Integer>();
+		
+		- 용량을 알 필요가 없다. 굳이 용량을 초기 설정해서 만들때에는 생성자에 용량 크기 설정
+		Vector<Integer> V = new Vector<Integer>(5);	// 용량이 5인 벡터 생성
+
+		#2. 벡터 주요 메서드
+
+		boolean 	add(E element)			: 맨 뒤에 element 추가
+		void 		add(int index, E element)	: index에 element 추가
+		int		capacity()			: 현재 용량 리턴
+		boolean		addAll(Collection<? extends E> c): 컬렉션 c의 모든 요소를 벡터 맨 뒤에 추가
+		void		clear()				: 모든 요소 삭제
+		boolean		contains(Object o)		: o를 포함하고 있으면 true 리턴
+		E		elementAt(int index)		: index의 요소 리턴
+		E		get(int index)			: index의 요소 리턴
+		int		indexOf(Object o)		: o와 동일한 첫번째 요소의 인덱스 리턴, 없으면 -1
+		boolean		isEmpty()			: 벡터가 비어있으면 true 리턴
+		E		remove(int index)		: index 요소 삭제
+		boolean		remove(Object o)		: o와 같은 첫번째 요소 삭제
+		void		removeAllElements()		: 모든 요소 삭제하고 크기 0으로 만듬
+		int		size()				: 벡터 내 요소의 개수 리턴
+		Object[]	toArray()			: 모든 요소 포함한 배열 리턴
+
+
+	4) 제네릭 없이 사용
+		: add메소드를 이용시에 Object 클래스로 저장이 된다.
+		  꺼낼 시 Object 클래스로 꺼내다 보니 따로 처리를 해야 한다.
+
+
+	5) ArrayList<E>	: java.util.ArrayList
+		: 가변크기의 배열을 구현, Vector와 거의 동일
+		  
+		#1. 주요 메서드 
+
+		boolean 	add(E element)			: 맨 뒤에 element 추가		  
+		void 		add(int index, E element)	: index에 element 추가
+		boolean		addAll(Collection<? extends E> c): 컬렉션 c의 모든 요소를 벡터 맨 뒤에 추가
+		void		clear()				: 모든 요소 삭제	
+		boolean		contains(Object o)		: o를 포함하고 있으면 true 리턴
+		E		get(int index)			: index의 요소 리턴
+		int		indexOf(Object o)		: o와 동일한 첫번째 요소의 인덱스 리턴, 없으면 -1
+		boolean		isEmpty()			: 벡터가 비어있으면 true 리턴
+		E		remove(int index)		: index 요소 삭제
+		boolean		remove(Object o)		: o와 같은 첫번째 요소 삭제		
+		int		size()				: 벡터 내 요소의 개수 리턴
+		Object[]	toArray()			: 모든 요소 포함한 배열 리턴
+		
+		#2. 객체 생성
+
+		ArrayList <제네릭타입> 레퍼런스 변수명 = new ArrayList<제네릭타입> ();
+
+		// 요소 삽입, 요소 꺼내오기, 요소 개수, 요소 삭제, 모든 요소 삭제
+
+
+	6) Iterator<E>	반복자
+		: Vector, ArrayList, LinkedList, Set 등과 같이
+		  요소가 순서대로 저장된 컬렉션에서 요소를 순차적으로 검색할대
+		  Iterator<E> 인터페이스를 사용하면 편함.
+		
+
+		#1. 주요메서드
+		
+		boolean		hasNext()	: 검색/방문할 요소가 남아있으면 true
+		E		next()		: 다음 요소 리턴
+		void		remove()	: 마지막으로 리턴된 요소 제거
+		
+		[Vector,ArrayList,LinkedList... 등 컬렉션에 존재하는 메서드]
+		Iterator<E>	iterator()	: 반복자를 가져오는 메서드
+	
+	7) HashMap<K,V>	: java.util.HashMap
+		: 키(Key)와 값(Value)의 쌍으로 구성되는 요소를 다룬다. 
+		  K는 키로 사용할 데이터 타입 지정, V는 값으로 사용할 데이터 타입을 지정.
+		  데이터 저장 / 꺼내올때 key를 (기존에 인덱스처럼)이용한다.
+		  key값은 중복 허용이 안된다. 순서도 없다.
+
+		#1. 장단점
+		- 삽입,삭제 시간이 매우 빠르다.
+		- 검색은 더 빠르다.
+				
+		#2. 주요 메서드
+		void		clear()		: 모든요소 삭제
+		boolean  	containsKey(Object key)		: key를 포함하고 있으면 true
+		boolean		containsValue(Object value)	: value에 일치하는 키가 있으면 true
+		V		get(Object key)			: key에 해당하는 값 리턴, 없으면 null.
+		boolean		isEmpty()			: HashMap이 비어있는지 확인 비어있으면 true
+		Set<K>		keySet()			: 모든 키를 담은 Set<K> 컬렉션 리턴
+		V		put(K key, V value)		: key와 value 쌍을 저장
+		V		remove(Object key)		: 키를 찾아 키와 값 모두 삭제
+		int		size()				: 요소의 개수 리턴

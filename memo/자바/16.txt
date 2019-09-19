@@ -1,0 +1,257 @@
+[day16]
+
+1. 패키지 Package
+	: 폴더 : 서로 관련있는 클래스나 컴파일된 클래스 파일들을 한 곳에 묶어 놓은것
+	rt.jar 압축파일로 제공
+
+	1) 클래스 경로명
+	클래스를 지칭할때는 패키지명을 포함한 경로명을 사용한다. 패키지와 클래스 사이 점(.)연산자 사용
+		java.awt.Color
+
+	2) 패키지 사용
+	기본적으로 클래스 사용시, 패키지명을 포함한 전체 경로명을 기술해야한다.
+		java.util.Scanner sc = new Scanner(System.in);
+
+	3) import문
+		: 클래스 소스코드 작성 전에 선언, 파일 최상단에 기술한다.
+		import 패키지.클래스;
+		import java.util.Scanner;
+
+		Scanner sc = new Scanner(System.in);
+
+		한 패키지에 있는 여러 클래스들 import 하고자 하는 경우,
+		*을 사용하여 선언 가능하다.
+
+		import 패키지.*;
+		import java.util.*;
+
+	4) package 만들기
+
+		package 패키지명;
+
+		#default 패키지 : package 선언 사용하지 않을 경우 현재 디랙토리를 인지함.
+			eclipse의 경우 workspace 폴더 자체.
+
+
+2. API Application Programming Interface
+
+	: 자바에서 제공하는 기본 패키지
+	  자바를 설치하면 자발 개발 도구 JDK (Java Development Kit)가 설치되며,
+	  이곳에는 개발자들이 사용할 수 있도록 오라클에서 미리 만들어 놓은 많은 클래스들을 
+	  패키지로 제공한다.
+
+	1) API 문서
+	# JAVA SE
+	https://docs.oracle.com/javase/8/docs/api/
+
+	# JAVA EE(웹)
+	https://docs.oracle.com/javaee/7/api/toc.htm
+
+
+	2) API
+	java.awt 	: GUI
+	java.beans 	: == 컴포넌트 클래스 (부품클래스 만든다) CBD
+	java.io 	: input/output	(I/O) : File 관리하는 클래스 사용
+	java.lang	: 기본패키지(*)
+	java.math	: 기본연산이외에 더 큰 다양한 연산등이 필요할때 사용하는 패키지
+	java.net	: 네트워크(보안, 네트워크....)	ip,connection(*)
+	java.nio	: new I/O 새로운 입출력장치가 생기면 호환을 하기 위한 패키지
+	java.security	: 보안관련
+	java.sql	: 데이터베이스 연결할 때 사용(*)
+	java.text	: 글자 관련, 폰트 색
+	java.util	: 배열을 대신하는 작업이 이곳에 있다.(*) 많이 사용됨.날짜, 벡터, 해쉬맵, 데이터 저장 간단한 입출력
+	javax.~ 	: 서포트하는 패키지
+
+	그 외,
+	구글 API 	: https://code.google.com/	: 지도, 메일 등등
+	네이버 API	: 네이버 개발자 센터
+	공공데이터 포털 : https://www.data.go.kr/	: 데이터베이스 자료 사이트, 관공소, 상권, 부동산 ......
+			10%만 제공.
+
+
+	3) java.lang
+		import 필요 없음.
+		System을 비롯하여 문자열, 수학함수, 입출력등 기본적인 클래스와 인터페이스를 제공
+		
+		1) Object 클래스 : 최상위 클래스
+			11개 메서드 -> 모든 클래스는 최소 11개의 메서드를 갖고 있다.
+
+			#생성
+			Object 변수명 = new Object();
+
+			#주요 메서드
+			boolean equals(Object obj) 	: obj가 가르키는 객체와 현재 객체가 같으면 true
+			Class getClass()	   	: 현 객체의 런타임 클래스 리턴
+			int hashCode()			: 현 객체의 대한 해쉬코드 값 리턴
+							  해쉬코드 : 객체 생성시 객체를 유일하게 구분할 수 있는 정보
+
+			String toString()		: 현 객체 대한 문자열을 표현
+			void notify()			: 현 객체에 대해 대기하고 있는 하나의 스레드를 깨운다.
+			void notifyAll()		: 현 객체에 대해 대기하고 있는 모든 스레드를 깨운다.
+			void wait()			: 다른 스레드가 깨울 때 까지 대기한다.
+
+
+
+			# toString() 메서드
+				객체 + 문자열 연산이나 객체를 출력하는 경우 toString()이 자동 호출 된다.
+
+			# equals() 메서드
+				기본타입을 비교할때는 == 연산자 사용하지만,
+				객체를 비교할때는 equals메소드 사용해야함.
+			
+				두 객체의 내용물이 같은지 비교하는 메서드
+				내용의 동일성은 전적으로 클래스 작성자가 정의할 문제
+				클래스 작성자가 object의 equals()메서드를 오버라이딩 하는 것이 원칙이다.
+
+
+				String의 equals() : 문자열이 같은지 비교.
+
+
+
+		2) String 클래스 : java.lang
+			: 문자열 클래스
+			  스트링 리터럴은 자바 컴파일러에 의해 모두 String 객체로 처리
+
+			# 스트링리터럴과 new String()
+
+			각각 서로 다르게 관리
+			스트링리터털 -> 자바 내부에서 리터럴 테이블로 특별 관리하여 동일한 리터럴 공유함.
+			new String () -> new로 생성된 스트링은 다른 객체와 동일하게 힙메모리에 생성.
+
+			리터럴로 생성한 String은 수정불가능하여 리터럴이 수정된것으로 새로 수정.
+
+
+			# 주요 메서드
+
+			char charAt(int index)			: index에 있는 문자 값 리턴
+			int compareTo(String anotherString)	: 두 String 을 사전순으로 비교, 같으면 0,
+								  현재 스트링이 먼저나오면 음수, 아니면 양수 리턴
+
+			String concat(String str)		: 현재 스트링뒤에 str 매개변수 스트링을 덧붙힌
+								  새로운 스트링 리턴.
+
+			boolean contains(CharSequence s)	: s에 지정된 문자들을 포함하고 있으면 true
+			int length()				: 스트링 길이(문자수) 리턴
+			String replace(CharSequence target, CharSequence replacement)
+								: target을 replacement로 변경한 String 리턴
+
+			String [] split(String regex)		: 정규식 regex에 일치하는 부분으로 스트링을 분할하고
+								  분리된 스트링을 배열로 저장하여 리턴.
+
+			String subString(int beginIndex)	: beginIndex 부터 시작하여 이어지는 스트링 리턴.
+			String toLowerCase()			: 소문자로 변경한 스트링 리턴
+			String toUpperCass()			: 대문자로 변경한 스트링 리턴
+			String trim()				: 스트링 앞 뒤 공백 제거한 스트링 리턴	  
+
+
+		3) StringBuffer 클래스
+
+			: java.lang 	문자열 다룸
+			String 과 다르게 StringBuffer 객체는 문자열을 저장하는 가변버퍼를 가지고 있어
+			저장된 문자열 수정 가능. 문자열 길이가 늘어나면 내부 버퍼 크기를 자동 조절함
+
+			# 주요 메서드
+			StringBuffer	append(String str)	: str을 StringBuffer에 덧붙인다.
+			StringBuffer	append(StringBuffer sb)	: sb를 현재 StringBuffer에 덧붙인다.
+			int		capacity()		: 스트링 버퍼 크기 리턴
+			StringBuffer	delete(int start,int end): start ~ end 위치 앞까지 부분 문자열 삭제
+			StringBuffer    insert(int offset, String str): str을 offset의 위치에 삽입
+			StringBuffer	replace(int start,int end, String str) : start ~ end 위치 앞까지 문자열을 str로 대치
+			StringBuffer	reverse()		: 문자열 반대 순서로 변경
+			void		setLength(int newLength): 문자열 길이를 newLength로 재설정
+								  현재 길이 보다 큰경우, 널문자(' ')로 채우며
+								  작은 경우 기존 문자열 잘림
+
+
+		4) Wrapper 클래스
+			: Wrapper라는 클래스는 존재하지 않는다.
+			int, char, double 등 8개의 기본형을 객체로 다루기 위해
+			JDK에 만들에진 8개의 클래스들을 통칭하여 Wrapper클래스라 함
+		
+			기본타입:	byte short int 		long char	 float double boolean
+			Wrapper:	Byte Short Integer 	Long Character	 Float Double Boolean
+			# 객체 생성
+			클래스명 레퍼런스변수명 = new 클래스명(값);
+
+			# 주요 메서드 (Integer 메서드로 알아보자)
+			static int	bitCount(int i)		: i의 이진수 표현에서 1의 개수 리턴
+			float		floatValue()		: float 값 리턴
+			int		intValue()		: int 값 리턴
+			long		longValue()		: long 값 리턴
+			short		shortValue()		: short 값 리턴
+			static int	parseInt(String s)	: 문자열 s를 10진 정수로 변환한 값 리턴
+			static int 	parseInt(String s,int radix)	: s를 지정한 진법 정수로 변환한 값 리턴
+			toBinaryString(int i),toHexString(int i), toOctalString(int i), toString (int i)..............		
+			
+		
+		
+		5) Math 클래스
+			: java.lang
+			  모든 메서드는 Static 타입으로 바로 사용가능
+
+			abs(double a)	: 절대값
+			cos(double a)	: cosine
+			sin(double a)	: sine
+			tan(double a)	: tangent
+			exp(double a)	: e^a 값 리턴
+			ceil(double a)	: 천장값 : 올림
+			floor(double a)	: 바닥값 : 내림
+			max(double a, double b)	: 큰수 리턴
+			min(double a, double b)	: 작은 수 리턴
+			random()
+		long 	round(double a)	: 반올림
+		double 	sqrt(double a)	: 실수 a의 제곱근. sqrt(9)->3
+
+		
+		6) Calendar 클래스
+			:java.util 패키지 추상클래스
+			년,월,일,요일,시간,분,초 밀리초 등을 get(),set()메서드를 이용하여
+			저장하거나 알아낼 수 있는 클래스
+			1970.1.1.0.0을 기준으로
+			# 객체 생성	
+			new Calendar() X 사용불가
+			getInstance() 메서드 사용
+		
+			# 상수
+			YEAR		: 년도
+			DAY_OF_MONTH	: 한달의 날짜
+			MONTH		: 달(0~11)
+			DAY+OF_WEEK	: 한주의 요일
+			AM_PM		: 시간 (0~11)
+			HOUR_OF_DAY	: 24시간을 기준으로 한 시간
+			MINUTE		: 분
+			SECOND		: 초
+			MILLSECOND	: 밀리초
+			
+
+			# 그레고리안 달력
+				GregorianCalendar 클래스
+				1970.1.1.0.0을 기준으로 365.25일 4년에 1번 윤달이 있음.
+				윤년 계산이 있지만 잘 사용안함.
+				%100 == 0|| %4==0
+		
+		7) Date 클래스
+			: 단일클래스로 날짜 관련 클래스
+			  Calendar가 상수가 많아 성능이 더 좋고, Date는 메서드로 이루어져 있어 연산이 필요
+			  1900.1.1.0.0 을 기준
+			  1970.1.1.0.0 을 기준으로 이렇게 두가지 모두 가능.
+
+
+
+
+
+
+
+
+
+
+
+			
+			
+		
+			
+			
+			
+				
+			
+			
